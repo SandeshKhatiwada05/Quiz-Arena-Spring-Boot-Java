@@ -1,33 +1,3 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Quiz Arena</title>
-</head>
-<body>
-<h2>Start Your Quiz</h2>
-
-<form id="quizForm">
-    <label>Full Name:</label>
-    <input type="text" id="fullName" required><br><br>
-
-    <label>Age:</label>
-    <input type="number" id="age" required><br><br>
-
-    <label>Number of Questions:</label>
-    <input type="number" id="questionAmount" required><br><br>
-
-    <label>Question Type:</label>
-    <select id="questionType">
-        <option value="multiple">Multiple Choice</option>
-        <option value="boolean">True/False</option>
-    </select><br><br>
-
-    <button type="submit">Start Quiz</button>
-</form>
-
-<pre id="responseArea"></pre>
-
 <script>
     document.getElementById("quizForm").addEventListener("submit", function (e) {
         e.preventDefault();
@@ -46,12 +16,15 @@
         })
             .then(response => response.json())
             .then(data => {
-                document.getElementById("responseArea").textContent = JSON.stringify(data, null, 2);
+                // Save the response to localStorage
+                localStorage.setItem("quizData", JSON.stringify(data));
+                localStorage.setItem("playerName", payload.fullName);
+
+                // Redirect to quiz page
+                window.location.href = "quiz.html";
             })
             .catch(err => {
-                document.getElementById("responseArea").textContent = "Error: " + err;
+                alert("Error: " + err);
             });
     });
 </script>
-</body>
-</html>
