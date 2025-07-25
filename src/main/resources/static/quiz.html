@@ -1,18 +1,95 @@
-<!-- quiz.html -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8" />
     <title>Quiz Time!</title>
+
+    <!-- Google Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet" />
+
     <style>
-        .correct { color: green; }
-        .incorrect { color: red; }
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Press Start 2P', cursive;
+            background: url('images/background.png') no-repeat center center fixed;
+            background-size: cover;
+            color: #fff;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+            padding: 20px;
+        }
+
+        .quiz-box {
+            background-color: rgba(0, 0, 0, 0.8);
+            padding: 40px 30px;
+            border-radius: 15px;
+            width: 90%;
+            max-width: 600px;
+            box-shadow: 0 0 20px #00f0ff, 0 0 40px #00f0ff inset;
+            text-align: center;
+        }
+
+        h1 {
+            color: #00f0ff;
+            margin-bottom: 20px;
+            font-size: 22px;
+            text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.7);
+        }
+
+        p {
+            margin-bottom: 20px;
+            font-size: 12px;
+        }
+
+        button {
+            font-family: 'Press Start 2P', cursive;
+            font-size: 12px;
+            padding: 12px 20px;
+            margin: 8px;
+            background-color: #00f0ff;
+            color: black;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            box-shadow: 0 0 10px #00f0ff;
+            transition: background-color 0.3s ease;
+        }
+
+        button:hover {
+            background-color: #0ff;
+        }
+
+        button.correct {
+            background-color: #28a745;
+            color: white;
+        }
+
+        button.incorrect {
+            background-color: #dc3545;
+            color: white;
+        }
+
+        #score {
+            margin-top: 30px;
+            font-size: 16px;
+            color: #00f0ff;
+        }
     </style>
 </head>
 <body>
-<h1>Quiz Time!</h1>
-<div id="quizContainer"></div>
-<h2 id="score"></h2>
+<div class="quiz-box">
+    <h1>🧠 Quiz Time!</h1>
+    <div id="quizContainer"></div>
+    <h2 id="score"></h2>
+</div>
 
 <script>
     const data = JSON.parse(localStorage.getItem("quizData"));
@@ -21,7 +98,7 @@
     let index = 0;
 
     if (!data || !data.results || data.results.length === 0) {
-        quizContainer.innerHTML = "<p>No quiz data found. Please start quiz from home page.</p>";
+        quizContainer.innerHTML = "<p>No quiz data found. Please start the quiz from the homepage.</p>";
     } else {
         loadQuestion();
     }
@@ -42,7 +119,6 @@
             btn.innerText = ans;
             btn.onclick = () => checkAnswer(btn, ans === question.correct_answer);
             quizContainer.appendChild(btn);
-            quizContainer.appendChild(document.createElement("br"));
         });
     }
 
@@ -69,7 +145,7 @@
 
     function showScore() {
         quizContainer.innerHTML = "";
-        document.getElementById("score").innerText = `Quiz Completed! Your Score: ${score}/${data.results.length}`;
+        document.getElementById("score").innerText = `🎉 Quiz Completed! Your Score: ${score}/${data.results.length}`;
     }
 
     function shuffle(array) {
