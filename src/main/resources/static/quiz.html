@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8" />
     <title>Quiz Arena - Quiz</title>
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500&family=Roboto:wght@400;700&display=swap" rel="stylesheet">
 
     <style>
         * {
@@ -13,7 +13,7 @@
         }
 
         body {
-            font-family: 'Orbitron', sans-serif;
+            font-family: 'Roboto', sans-serif;
             background: url('Images/background.png') no-repeat center center fixed;
             background-size: cover;
             color: #fff;
@@ -22,6 +22,7 @@
             justify-content: center;
             align-items: center;
             padding: 20px;
+            position: relative;
         }
 
         .quiz-container {
@@ -30,7 +31,7 @@
             border-radius: 15px;
             width: 90%;
             max-width: 700px;
-            box-shadow: 0 0 25px #00f0ff, 0 0 40px #00f0ff inset;
+            box-shadow: 0 0 15px #00f0ff, 0 0 25px #00f0ff inset;
             text-align: center;
         }
 
@@ -38,13 +39,14 @@
             color: #00f0ff;
             font-size: 28px;
             margin-bottom: 20px;
+            font-family: 'Orbitron', sans-serif;
             text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.7);
         }
 
         .question-text {
             font-size: 20px;
             margin-bottom: 25px;
-            color: #fff;
+            color: #ffffff;
             line-height: 1.5;
         }
 
@@ -83,9 +85,43 @@
             margin-top: 30px;
             color: #00ffcc;
         }
+
+        .menu-btn {
+            margin-top: 20px;
+            background-color: #222;
+            color: #00f0ff;
+            border: 2px solid #00f0ff;
+            width: auto;
+        }
+
+        .menu-btn:hover {
+            background-color: #00f0ff;
+            color: black;
+        }
+
+        .top-home-btn {
+            position: absolute;
+            top: 20px;
+            right: 30px;
+            padding: 10px 16px;
+            font-size: 14px;
+            background-color: #111;
+            border: 2px solid #00f0ff;
+            border-radius: 8px;
+            color: #00f0ff;
+            cursor: pointer;
+            transition: 0.3s ease;
+        }
+
+        .top-home-btn:hover {
+            background-color: #00f0ff;
+            color: black;
+        }
     </style>
 </head>
 <body>
+<button class="top-home-btn" onclick="window.location.href='index.html'">🏠 Home</button>
+
 <div class="quiz-container">
     <h1>🎯 Quiz Time!</h1>
     <div id="quizContainer"></div>
@@ -148,6 +184,14 @@
     function showScore() {
         quizContainer.innerHTML = "";
         document.getElementById("score").innerText = `✅ Quiz Completed! Your Score: ${score} / ${data.results.length}`;
+
+        const menuBtn = document.createElement("button");
+        menuBtn.className = "menu-btn";
+        menuBtn.innerText = "🏠 Back to Main Menu";
+        menuBtn.onclick = () => {
+            window.location.href = "index.html";
+        };
+        quizContainer.appendChild(menuBtn);
     }
 
     function shuffle(array) {
