@@ -28,7 +28,8 @@
         }
 
         .container {
-            background-color: rgba(0, 0, 0, 0.8);
+            background-color: rgba(0, 0, 0, 0.4);  /* More transparent */
+            backdrop-filter: blur(6px);            /* Subtle glass blur effect */
             padding: 40px 30px;
             border-radius: 15px;
             width: 90%;
@@ -105,7 +106,7 @@
 <body>
 
 <div class="container">
-    <h1>🎮 Quiz Arena</h1>
+    <h1>Quiz Arena</h1>
     <form id="quizForm">
         <label for="fullName">Full Name:</label>
         <input type="text" id="fullName" required placeholder="Your Name" />
@@ -113,7 +114,7 @@
         <label for="age">Age:</label>
         <input type="number" id="age" required placeholder="Your Age" />
 
-        <label for="questionAmount"># of Questions:</label>
+        <label for="questionAmount">Number of Questions:</label>
         <input type="number" id="questionAmount" required placeholder="e.g. 5" />
 
         <label for="questionType">Question Type:</label>
