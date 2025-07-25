@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Quiz Arena</title>
+</head>
+<body>
+<h2>Start Your Quiz</h2>
+
+<form id="quizForm">
+    <label>Full Name:</label>
+    <input type="text" id="fullName" required><br><br>
+
+    <label>Age:</label>
+    <input type="number" id="age" required><br><br>
+
+    <label>Number of Questions:</label>
+    <input type="number" id="questionAmount" required><br><br>
+
+    <label>Question Type:</label>
+    <select id="questionType">
+        <option value="multiple">Multiple Choice</option>
+        <option value="boolean">True/False</option>
+    </select><br><br>
+
+    <button type="submit">Start Quiz</button>
+</form>
+
+<pre id="responseArea"></pre>
+
+<script>
+    document.getElementById("quizForm").addEventListener("submit", function (e) {
+        e.preventDefault();
+
+        const payload = {
+            fullName: document.getElementById("fullName").value,
+            age: parseInt(document.getElementById("age").value),
+            questionAmount: parseInt(document.getElementById("questionAmount").value),
+            questionType: document.getElementById("questionType").value
+        };
+
+        fetch("http://localhost:8080/api/start", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(payload)
+        })
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById("responseArea").textContent = JSON.stringify(data, null, 2);
+            })
+            .catch(err => {
+                document.getElementById("responseArea").textContent = "Error: " + err;
+            });
+    });
+</script>
+</body>
+</html>
