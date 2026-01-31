@@ -4,18 +4,18 @@ Welcome to **Quiz Arena** – a fun and interactive Spring Boot web application 
 
 ## Features
 
-- ✅ Start a quiz by entering your name, age, and preferences
-- 🔢 Choose number of questions
-- 📚 Select question type: Multiple Choice or True/False
-- 🧠 Questions fetched live from Open Trivia DB
-- 🎨 Stylish and animated frontend using pure HTML/CSS/JS
-- 💡 Built with Spring Boot REST API backend
+- Start a quiz by entering your name, age, and preferences
+- Choose number of questions
+- Select question type: Multiple Choice or True/False
+- Questions fetched live from Open Trivia DB
+- Stylish and animated frontend using pure HTML/CSS/JS
+- Built with Spring Boot REST API backend
 
 ## Screenshots
 
 | Welcome Screen | Quiz Screen |
 |----------------|-------------|
-| ![Start Screen](https://user-images.githubusercontent.com/your-img1.png) | ![Quiz Screen](https://user-images.githubusercontent.com/your-img2.png) |
+| <img width="777" height="722" alt="image" src="https://github.com/user-attachments/assets/e12f4dce-331b-466e-90c4-9aa112ebc793" /> | <img width="1153" height="841" alt="image" src="https://github.com/user-attachments/assets/93c48196-2f85-4ae4-b50d-56cd7b46f7f2" />|
 
 ## Tech Stack
 
