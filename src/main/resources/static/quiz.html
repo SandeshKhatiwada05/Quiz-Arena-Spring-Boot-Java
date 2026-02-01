@@ -1,204 +1,502 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8" />
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
     <title>Quiz Arena - Quiz</title>
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500&family=Roboto:wght@400;700&display=swap" rel="stylesheet">
-
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
     <style>
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
+        :root {
+            --primary-gradient: linear-gradient(135deg, #26c6da 0%, #2979ff 100%);
+            --glass: rgba(23, 32, 57, 0.85);
+            --glass-border: rgba(255,255,255,0.15);
+            --card-bg: rgba(40, 55, 90, 0.97);
+            --accent: #ffd166;
+            --accent-2: #66f6c3;
+            --highlight: #3fcde7;
+            --danger: #ff6b6b;
+            --muted: #a5b0ca;
+            --heading: #fdfeff;
+            --text: #eaf0fa;
+            --shadow-lg: 0 10px 36px rgba(32,40,102,0.22);
+            --option-correct: linear-gradient(90deg, #16c96c 0%, #58eaa6 100%);
+            --option-wrong: linear-gradient(90deg, #ba4848 0%, #ef746f 100%);
         }
 
+        html,body { height:100%; min-height:100vh; }
         body {
-            font-family: 'Roboto', sans-serif;
-            background: url('Images/background.png') no-repeat center center fixed;
-            background-size: cover;
-            color: #fff;
-            height: 100vh;
+            font-family:'Poppins', Arial, sans-serif;
+            background: var(--primary-gradient);
+            min-height:100vh;
+            color:var(--text);
+            display:flex;
+            align-items:center;
+            justify-content:center;
+            padding:30px;
+            background-attachment: fixed;
+            background-repeat: no-repeat;
+            animation: gradientMove 28s linear infinite;
+            position:relative;
+        }
+        @keyframes gradientMove {
+            0% { background-position: 0% 30%; }
+            70% { background-position: 100% 90%; }
+            100% { background-position: 0% 30%; }
+        }
+        /* Subtle motion particles */
+        body::after {
+            content: "";
+            position: fixed;
+            pointer-events: none;
+            z-index: 0;
+            inset: 0;
+            background: radial-gradient(circle at 22% 81%, #ffd16615 2px, transparent 90px),
+            radial-gradient(circle at 55% 9%, #ffffff11 1.5px, transparent 120px);
+            opacity:0.55;
+            mix-blend-mode: lighten;
+            animation: sparklequiz 11s linear infinite alternate;
+        }
+        @keyframes sparklequiz {
+            50% { background-position: 30px 80px, 90px -40px;}
+        }
+
+        .container {
+            width: 100%;
+            max-width: 910px;
+            border-radius: 24px;
+            background: var(--glass);
+            border: 2px solid var(--glass-border);
+            padding: 35px 34px 12px 34px;
+            box-shadow: var(--shadow-lg),0 2px 18px 1px #003f7c18;
+            position:relative;
+            z-index:2;
             display: flex;
-            justify-content: center;
+            flex-direction: column;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
             align-items: center;
-            padding: 20px;
+            gap: 14px;
+            margin-bottom: 21px;
             position: relative;
         }
-
-        .quiz-container {
-            background-color: rgba(0, 0, 0, 0.85);
-            padding: 30px 25px;
-            border-radius: 15px;
-            width: 90%;
-            max-width: 700px;
-            box-shadow: 0 0 15px #00f0ff, 0 0 25px #00f0ff inset;
-            text-align: center;
+        .left h2 {
+            color: var(--accent-2);
+            font-size: 23px;
+            font-weight: 700;
+            letter-spacing:1.1px;
+            margin-bottom: 7px;
+            position:relative;
         }
-
-        h1 {
-            color: #00f0ff;
-            font-size: 28px;
-            margin-bottom: 20px;
-            font-family: 'Orbitron', sans-serif;
-            text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.7);
+        .left h2::before {
+            content:"";
+            display:block;
+            width:32px; height:3px;
+            border-radius:2px;
+            background: linear-gradient(90deg,var(--accent-2),var(--accent) 80%);
+            position:absolute;
+            left:0; bottom:-8px;
+            opacity:0.6;
         }
-
-        .question-text {
-            font-size: 20px;
-            margin-bottom: 25px;
-            color: #ffffff;
-            line-height: 1.5;
+        .meta {
+            font-size: 15px;
+            font-weight:600;
+            color: var(--muted);
         }
-
-        button {
-            display: inline-block;
-            background-color: #00f0ff;
-            color: black;
+        .home-btn {
+            background: linear-gradient(100deg, var(--accent) 29%, var(--accent-2) 99%);
+            color: #071c27;
             border: none;
-            border-radius: 8px;
-            padding: 12px 18px;
-            margin: 8px;
-            font-size: 16px;
+            font-weight:600;
+            font-size:15px;
+            padding:12px 24px;
+            border-radius: 15px;
             cursor: pointer;
-            transition: all 0.3s ease;
-            width: 100%;
-            max-width: 500px;
+            box-shadow: 0 3px 16px #00e1ff21;
+            transition: background 0.16s, transform 0.09s, box-shadow .12s;
+            display: inline-flex;
+            align-items: center;
+            gap:10px;
+        }
+        .home-btn:hover {
+            background: linear-gradient(95deg, var(--accent-2) 5%, var(--accent) 99%);
+        }
+        .home-btn svg {
+            height:19px;width:19px;vertical-align:middle;stroke-width:2.3;
+            stroke:var(--accent-2);
+        }
+        .home-btn:active { transform:translateY(1px) scale(.98); }
+        .card {
+            background: var(--card-bg);
+            border-radius: 20px;
+            border: 1.6px solid var(--glass-border);
+            display: flex;
+            gap: 34px;
+            padding: 32px 23px;
+            box-shadow: 0 3px 18px #1b385754;
+            margin-bottom: 0;
+            position:relative;
+            z-index:2;
+            min-height: 290px;
+            animation: fadeIn 1.1s cubic-bezier(.32,.93,.38,1.14) .1s both;
+        }
+        @keyframes fadeIn {
+            from { opacity:0; transform:translateY(45px) scale(.98);}
+        }
+        .left-col {
+            flex: 1 1 0;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        .question {
+            font-size: 21px;
+            font-weight: 700;
+            color: var(--heading);
+            margin-bottom: 21px;
+            line-height: 1.67;
+            text-shadow:0 2px 16px #2eacb42b;
+            letter-spacing: 0.01em;
+            word-break:break-word;
+        }
+        .answers {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 14px;
+        }
+        .option {
+            background: linear-gradient(90deg,rgba(255,255,255,0.02),rgba(0,0,0,0.17));
+            padding: 16px 18px;
+            border-radius: 13px;
+            cursor: pointer;
+            border: 1.3px solid rgba(255,255,255,0.04);
+            transition: box-shadow .13s, background .17s, transform .13s;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            font-size: 17px;
+            color: var(--text);
+            font-weight: 600;
+            box-shadow: 0 1px 9px #1ecce13e;
+            user-select:none;
+        }
+        .option:active { transform:scale(.98);}
+        .option:hover:not(.disabled){
+            background:linear-gradient(92deg,#34d6e922 0%, #1ea9781a 100%);
+            box-shadow:0 4px 18px #1fdff940;
+        }
+        .option.disabled { opacity:.58; cursor:not-allowed; transform:none;}
+        .option.correct {
+            background: var(--option-correct);
+            border: 1.7px solid #39df97;
+            color: #022511;
+            font-weight: 800;
+            box-shadow: 0 1px 19px #09e6c844;
+        }
+        .option.incorrect {
+            background: var(--option-wrong);
+            border: 1.5px solid #fe7a7a;
+            color: #380c0c;
+            font-weight: 800;
         }
 
-        button:hover {
-            background-color: #0ff;
-            box-shadow: 0 0 10px #00f0ff;
+        .right-col {
+            width:240px;
+            min-width:170px;
+            display:flex;
+            flex-direction:column;
+            gap:16px;
+            justify-content:center;
         }
 
-        .correct {
-            background-color: green !important;
-            color: white !important;
+        .progress-label {
+            font-size:14px;
+            color:var(--muted);
+            margin-bottom:7px;
+        }
+        .progress {
+            width:100%;
+            height:17px;
+            background:rgba(255,255,255,0.05);
+            border-radius:8px;
+            overflow:hidden;
+            border: 1.3px solid rgba(255,255,255,0.03)
+        }
+        .progress > i {
+            display:block;
+            height:100%;
+            background: linear-gradient(90deg, var(--highlight), var(--accent-2) 80%);
+            width:0%;
+            transition: width 0.42s cubic-bezier(.2,.9,.46,1.01);
         }
 
-        .incorrect {
-            background-color: red !important;
-            color: white !important;
+        .score {
+            padding: 16px;
+            border-radius: 10px;
+            background: linear-gradient(180deg,rgba(255,255,255,0.012),rgba(255,255,255,0.03));
+            text-align: center;
+            color: var(--accent-2);
+            font-size: 18px;
+            font-weight: 700;
+            border: 1px solid rgba(255,255,255,0.03);
+            box-shadow: 0 1px 10px #1cddd711;
+            margin-top:6px;
         }
 
-        #score {
-            font-size: 22px;
-            margin-top: 30px;
-            color: #00ffcc;
+        .qinfo-label {
+            font-size:14.3px;
+            color:var(--muted);
+            margin-bottom:3.5px;
+        }
+        #qInfo {
+            font-size:15px;
+            color:#eafaf5;
+            font-weight:600;
         }
 
+        .footer {
+            margin-top:20px;
+            display:flex;
+            justify-content:space-between;
+            align-items:center;
+            gap:13px;
+            font-size:14.4px;
+        }
+        .footer-info {
+            color: var(--muted);
+        }
         .menu-btn {
-            margin-top: 20px;
-            background-color: #222;
-            color: #00f0ff;
-            border: 2px solid #00f0ff;
-            width: auto;
+            padding:12px 24px;
+            border-radius:13px;
+            font-size:15px;
+            border:none;
+            font-weight:700;
+            background: linear-gradient(97deg, var(--accent-2) 40%, var(--accent) 120%);
+            color: #101c17;
+            cursor:pointer;
+            transition:background 0.13s, transform .12s, box-shadow .11s;
+            box-shadow:0 2px 13px #13f7e215;
+            display:inline-flex;
+            align-items:center;
+            gap:8px;
         }
-
+        .menu-btn:active {transform: translateY(1px) scale(.97);}
         .menu-btn:hover {
-            background-color: #00f0ff;
-            color: black;
+            background: linear-gradient(95deg, var(--accent) 11%, var(--accent-2) 70%);
         }
 
-        .top-home-btn {
-            position: absolute;
-            top: 20px;
-            right: 30px;
-            padding: 10px 16px;
-            font-size: 14px;
-            background-color: #111;
-            border: 2px solid #00f0ff;
-            border-radius: 8px;
-            color: #00f0ff;
-            cursor: pointer;
-            transition: 0.3s ease;
+        .result {
+            text-align: center;
+            padding: 36px 10px 24px 10px;
+            border-radius: 15px;
+            margin-top: 21px;
+            background: rgba(28, 32, 66, 0.93);
+            box-shadow: 0 4px 16px #0ef9e13d;
+            animation: resultPop .97s cubic-bezier(.24,.72,.38,1.08) 1;
+        }
+        @keyframes resultPop {
+            0% {opacity: 0; transform:scale(.91);}
+            65% {opacity:.92; transform:scale(1.04);}
+            82% {opacity:1; transform:scale(.98);}
+            100% { opacity:1; transform:scale(1);}
+        }
+        .result .big {
+            font-size: 27px;
+            color: var(--accent-2);
+            margin-bottom: 6px;
+            font-weight: 700;
+            text-shadow:0 2px 16px #29ffe22e;
+            letter-spacing:0.03em;
+        }
+        .result p {
+            color: var(--muted);
+            font-size: 17.2px;
+            margin-bottom: 18px;
+            font-weight: 700;
         }
 
-        .top-home-btn:hover {
-            background-color: #00f0ff;
-            color: black;
+        @media (max-width:980px){
+            .container {padding:17px 3vw 7px 3vw;}
+            .right-col{min-width:110px;}
+            .card {flex-direction:column;gap:17px;}
+        }
+        @media (max-width:660px){
+            .container {padding:5px 2vw 7px 2vw;}
+            .header{flex-direction:column;align-items:flex-start;}
+            .right-col{width:100%;}
+            .card{padding:11px 3vw;}
+        }
+        @media (max-width:400px){
+            .container{padding:0 0;}
+            .header{gap:4px;}
+            .card{padding: 5px 2vw;}
+            .answers {gap:7px;}
+            .score{padding:9px;}
         }
     </style>
 </head>
 <body>
-<button class="top-home-btn" onclick="window.location.href='index.html'">🏠 Home</button>
-
-<div class="quiz-container">
-    <h1>🎯 Quiz Time!</h1>
-    <div id="quizContainer"></div>
-    <h2 id="score"></h2>
+<div class="container">
+    <div class="header">
+        <div class="left">
+            <h2>QUIZ ARENA</h2>
+            <div id="playerMeta" class="meta">Good luck!</div>
+        </div>
+        <div>
+            <button class="home-btn" onclick="location.href='index.html'">
+                <svg fill="none" stroke="currentColor" viewBox="0 0 28 28"><path d="M5.5 13.5V22.5A1 1 0 0 0 6.5 23.5H21.5A1 1 0 0 0 22.5 22.5V13.5M14 22.5V16.5M2.5 13.5L14 4.5L25.5 13.5" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                Back
+            </button>
+        </div>
+    </div>
+    <div class="card">
+        <div class="left-col">
+            <div id="questionBlock" aria-live="polite">
+                <div id="qText" class="question"></div>
+                <div id="answers" class="answers"></div>
+            </div>
+        </div>
+        <div class="right-col">
+            <div>
+                <div class="progress-label">Progress</div>
+                <div class="progress" aria-hidden="true"><i id="progressFill"></i></div>
+            </div>
+            <div class="score" id="liveScore">Score: <strong>0</strong></div>
+            <div>
+                <div class="qinfo-label">Question Info</div>
+                <div id="qInfo"></div>
+            </div>
+        </div>
+    </div>
+    <div id="endScreen" style="display:none;" class="result"></div>
+    <div class="footer">
+        <div class="footer-info">Powered by your server • Play fair & smart</div>
+        <div>
+            <button class="menu-btn" onclick="location.href='index.html'">
+                <svg fill="none" stroke="currentColor" viewBox="0 0 28 28"><path d="M5.5 13.5V22.5A1 1 0 0 0 6.5 23.5H21.5A1 1 0 0 0 22.5 22.5V13.5M14 22.5V16.5M2.5 13.5L14 4.5L25.5 13.5" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                Main Menu
+            </button>
+        </div>
+    </div>
 </div>
-
 <script>
-    const data = JSON.parse(localStorage.getItem("quizData"));
-    const quizContainer = document.getElementById("quizContainer");
-    let score = 0;
-    let index = 0;
+    const data = JSON.parse(localStorage.getItem("quizData") || "null");
+    const player = JSON.parse(localStorage.getItem("quizPlayer") || "null");
+    const qText = document.getElementById("qText");
+    const answersEl = document.getElementById("answers");
+    const progressFill = document.getElementById("progressFill");
+    const liveScore = document.getElementById("liveScore");
+    const qInfo = document.getElementById("qInfo");
+    const playerMeta = document.getElementById("playerMeta");
+    const endScreen = document.getElementById("endScreen");
+
+    let score = 0, index = 0;
 
     if (!data || !data.results || data.results.length === 0) {
-        quizContainer.innerHTML = "<p>No quiz data found. Please start quiz from the home page.</p>";
+        qText.innerText = "No quiz data found. Return to the home page and start a new quiz.";
+        answersEl.innerHTML = "";
+        playerMeta.innerText = "No active player";
+        document.querySelector(".right-col").style.display = "none";
     } else {
+        playerMeta.innerText = player ? `${player.fullName} • ${player.questionAmount} Qs • ${player.questionType}` : "Player";
         loadQuestion();
+        updateProgress();
     }
-
     function loadQuestion() {
         const question = data.results[index];
-        quizContainer.innerHTML = "";
+        qText.innerHTML = decodeHTML(question.question || "Question");
+        answersEl.innerHTML = "";
 
-        const questionElem = document.createElement("p");
-        questionElem.className = "question-text";
-        questionElem.innerHTML = `<strong>Q${index + 1}:</strong> ${question.question}`;
-        quizContainer.appendChild(questionElem);
-
-        const answers = [...question.incorrect_answers, question.correct_answer];
+        const answers = (question.incorrect_answers || []).slice();
+        answers.push(question.correct_answer);
         shuffle(answers);
 
         answers.forEach(ans => {
-            const btn = document.createElement("button");
-            btn.innerText = ans;
-            btn.onclick = () => checkAnswer(btn, ans === question.correct_answer);
-            quizContainer.appendChild(btn);
+            const btn = document.createElement("div");
+            btn.className = "option";
+            btn.tabIndex = 0;
+            btn.innerHTML = `<span style="flex:1">${decodeHTML(ans)}</span>`;
+            btn.onclick = () => handleSelect(btn, ans === question.correct_answer);
+            btn.onkeydown = (e) => { if (e.key === 'Enter' || e.key === ' ') handleSelect(btn, ans === question.correct_answer); };
+            answersEl.appendChild(btn);
         });
-    }
 
-    function checkAnswer(button, isCorrect) {
+        qInfo.innerText = `Q ${index + 1} of ${data.results.length}`;
+    }
+    function handleSelect(elem, isCorrect) {
+        const all = answersEl.querySelectorAll(".option");
+        all.forEach(s => { s.classList.add("disabled"); s.onclick = null; s.onkeydown = null; });
+
         if (isCorrect) {
             score++;
-            button.classList.add("correct");
+            elem.classList.add("correct");
         } else {
-            button.classList.add("incorrect");
+            elem.classList.add("incorrect");
+            // highlight correct answer
+            const correct = Array.from(all).find(x => x.innerText.trim() === decodeHTML(data.results[index].correct_answer));
+            if (correct) correct.classList.add("correct");
         }
 
-        const allButtons = quizContainer.querySelectorAll("button");
-        allButtons.forEach(btn => btn.disabled = true);
+        liveScore.innerHTML = `Score: <strong>${score}</strong>`;
 
         setTimeout(() => {
             index++;
             if (index < data.results.length) {
                 loadQuestion();
+                updateProgress();
             } else {
-                showScore();
+                showResults();
             }
-        }, 1000);
+        }, 950);
     }
-
-    function showScore() {
-        quizContainer.innerHTML = "";
-        document.getElementById("score").innerText = `✅ Quiz Completed! Your Score: ${score} / ${data.results.length}`;
-
-        const menuBtn = document.createElement("button");
-        menuBtn.className = "menu-btn";
-        menuBtn.innerText = "🏠 Back to Main Menu";
-        menuBtn.onclick = () => {
-            window.location.href = "index.html";
+    function updateProgress() {
+        const pct = Math.round((index / data.results.length) * 100);
+        progressFill.style.width = pct + "%";
+    }
+    function showResults() {
+        document.querySelector(".card").style.display = "none";
+        endScreen.style.display = "block";
+        endScreen.innerHTML = `
+        <div class="big">Quiz Completed</div>
+        <p>Final Score: <span style="color:var(--accent-2);font-weight:700;">${score}</span> / ${data.results.length}</p>
+        <div style="display:flex;gap:14px;justify-content:center;margin-top:10px;">
+            <button class="menu-btn" onclick="location.href='index.html'">
+                <svg fill="none" stroke="currentColor" viewBox="0 0 28 28"><path d="M5.5 13.5V22.5A1 1 0 0 0 6.5 23.5H21.5A1 1 0 0 0 22.5 22.5V13.5M14 22.5V16.5M2.5 13.5L14 4.5L25.5 13.5" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                Main Menu
+            </button>
+            <button class="menu-btn" onclick="downloadResults()">
+              <svg fill="none" stroke="currentColor" viewBox="0 0 32 32" width="20" height="20"><path d="M8 20V24A2 2 0 0020 24V20M16 4V20M12 16L16 20L20 16" stroke="#21b9e6" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              Download Results
+            </button>
+        </div>
+    `;
+    }
+    function downloadResults(){
+        const payload = {
+            player, score, total: data.results.length, date: new Date().toISOString()
         };
-        quizContainer.appendChild(menuBtn);
+        const blob = new Blob([JSON.stringify(payload, null, 2)], {type:'application/json'});
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `quiz_result_${(player && player.fullName)||'player'}.json`;
+        document.body.appendChild(a);
+        a.click();
+        a.remove();
+        URL.revokeObjectURL(url);
     }
-
-    function shuffle(array) {
-        for (let i = array.length - 1; i > 0; i--) {
-            const j = Math.floor(Math.random() * (i + 1));
-            [array[i], array[j]] = [array[j], array[i]];
+    function shuffle(arr){
+        for(let i=arr.length-1;i>0;i--){
+            const j=Math.floor(Math.random()*(i+1));
+            [arr[i],arr[j]]=[arr[j],arr[i]];
         }
+    }
+    function decodeHTML(html){
+        const txt = document.createElement('textarea');
+        txt.innerHTML = html;
+        return txt.value;
     }
 </script>
 </body>

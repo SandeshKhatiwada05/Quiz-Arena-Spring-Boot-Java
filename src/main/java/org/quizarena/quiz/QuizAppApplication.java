@@ -8,5 +8,6 @@ public class QuizAppApplication {
 
     public static void main(String[] args) {
         SpringApplication.run(QuizAppApplication.class, args);
+        System.out.println("Quiz Application is running: http://localhost:8080");
     }
 }
