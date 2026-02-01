@@ -23,19 +23,6 @@ Welcome to **Quiz Arena** – a fun and interactive Spring Boot web application 
 - **Frontend:** HTML, CSS, JavaScript
 - **API:** [Open Trivia DB](https://opentdb.com)
 
-## Project Structure
-
-```bash
-QuizArena/
-├── src/main/java/org/quizarena/
-│ ├── QuizController.java
-│ └── PlayerEntity.java
-├── src/main/resources/static/
-│ ├── index.html
-│ └── quiz.html
-└── README.md
-```
-
 
 ## How It Works
 
